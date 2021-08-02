@@ -15,6 +15,7 @@ public class BoardDrawer : MonoBehaviour
     public GameObject cubePrefab;
     public GameObject tilePrefab;
     public GameObject arrowPrefab;
+    public GameObject waypointPrefab;
 
     public Texture gearcTexture;
     public Texture gearccTexture;
@@ -68,6 +69,9 @@ public class BoardDrawer : MonoBehaviour
     public Texture conveyor3lu;
     public Texture conveyor3lr;
     public Texture conveyor3ld;
+
+    public Texture beacon;
+    public Texture checkpoint1;
 
     public Dictionary<int, Dictionary<int, Dictionary<string, GameObject>>> gameObjectReferences;
 
@@ -150,8 +154,22 @@ public class BoardDrawer : MonoBehaviour
 
     public void DrawElement(int x, int y, Element element)
     {
+        if(element.elementEnum == "BEACON")
+        {
+            Debug.Log("drawing beacon at " + x + ", " + y);
+            GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
+            waypoint.GetComponent<MeshRenderer>().materials[0].color = Color.red;
+        }
+
+        if (element.elementEnum == "CHECKPOINT1")
+        {
+            Debug.Log("drawing checkpoint at " + x + ", " + y);
+            GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
+            waypoint.GetComponent<MeshRenderer>().materials[0].color = Color.green;
+        }
+
         //walls
-        if(element.elementEnum == "WALL_UP" ||
+        if (element.elementEnum == "WALL_UP" ||
             element.elementEnum == "WALL_RIGHT" ||
             element.elementEnum == "WALL_DOWN" ||
             element.elementEnum == "WALL_LEFT")
@@ -163,7 +181,7 @@ public class BoardDrawer : MonoBehaviour
         //things that arent walls
         Texture texture = getTexture(element.elementEnum);
         if (texture != null) {
-            float height = 0.5f + (0.01f * gameObjectReferences[x][y].Count - 1);   //block + tiles
+            //float height = 0.5f + (0.01f * gameObjectReferences[x][y].Count - 1);   //block + tiles
             Vector3 position = new Vector3(x, 0.55f, y);
             GameObject elementGameObject = Instantiate(tilePrefab, position, Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z+180f)));
             gameObjectReferences[x][y].Add(element.elementEnum, elementGameObject);
@@ -336,6 +354,12 @@ public class BoardDrawer : MonoBehaviour
                 return conveyor3lr;
             case "CONVEYOR_3_LEFT_DOWN":
                 return conveyor3ld;
+
+            case "CHECKPOINT1":
+                return checkpoint1;
+
+            case "BEACON":
+                return beacon;
 
             default:
                 Debug.Log("Unknown element: " + elementEnum);

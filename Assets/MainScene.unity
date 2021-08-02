@@ -245,6 +245,7 @@ MonoBehaviour:
   cubePrefab: {fileID: 7876558722841629997, guid: 9a2d28bdb18eeb54e8595d370dc067be, type: 3}
   tilePrefab: {fileID: 6687812456565461017, guid: 59ec261f7cba4924d88f037b89565f9e, type: 3}
   arrowPrefab: {fileID: 3961999710259707082, guid: 8a156b39b4b8f674481ce0b8d3bf84ce, type: 3}
+  waypointPrefab: {fileID: 8458714713285053599, guid: 8276a1ff5efaa4149bb52ea951b63c45, type: 3}
   gearcTexture: {fileID: 2800000, guid: 3cb304cbb797de44185b30d8363cc90d, type: 3}
   gearccTexture: {fileID: 2800000, guid: bbc22a11b5afe1b43b2ddfda9631b832, type: 3}
   wrench1Texture: {fileID: 2800000, guid: 978a5a0b9c81d3548b6c9a0e16ada473, type: 3}
@@ -291,6 +292,8 @@ MonoBehaviour:
   conveyor3lu: {fileID: 0}
   conveyor3lr: {fileID: 0}
   conveyor3ld: {fileID: 0}
+  beacon: {fileID: 2800000, guid: 1cd23ba7db4573640883590db24ab1e6, type: 3}
+  checkpoint1: {fileID: 2800000, guid: 5a228193a0ef2e64e8a72f1f3bc16e3a, type: 3}
 --- !u!4 &1167503394
 Transform:
   m_ObjectHideFlags: 0

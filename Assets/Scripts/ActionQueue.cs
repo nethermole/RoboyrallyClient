@@ -16,7 +16,7 @@ public class ActionQueue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int playerCount = 8;
+        int playerCount = 2;
 
         utilities = new Utilities();
 
@@ -25,12 +25,12 @@ public class ActionQueue : MonoBehaviour
 
         for(int i = 0; i < playerCount; i++)
         {
-            GameObject robot = Instantiate(arrowPrefab, utilities.convertGameXYtoVector3(4, 4) + new Vector3(0, 1f, 0), Quaternion.identity);
+            GameObject robot = Instantiate(arrowPrefab, utilities.convertGameXYtoVector3(0, 0) + new Vector3(0, 1f, 0), Quaternion.identity);
             game.GetPlayer(i).SetRobotPiece(robot);
         }
 
         InvokeRepeating("StartUpdatePolling", 1f, .1f);
-        InvokeRepeating("DoNextAction", 1f, .1f);
+        InvokeRepeating("DoNextAction", 1f, .7f);
 
         boardDrawer = GameObject.Find("BoardGetter").GetComponent<BoardDrawer>();
     }
@@ -92,7 +92,6 @@ public class ActionQueue : MonoBehaviour
         //handle moving
         StartCoroutine(
             MoveRobotTo(robot, utilities.convertGameXYtoVector3(viewStep.getEndPosition().GetX(), viewStep.getEndPosition().GetY()) + new Vector3(0, 1f, 0), .25f));
-        boardDrawer.gameObjectReferences[viewStep.getEndPosition().GetX()][viewStep.getEndPosition().GetY()]["floor"].GetComponent<Renderer>().material.color = player.getColor();
 
         //handle rotating
         int degreesToRotateRight = determineRotationRight(player.GetFacing(), viewStep.endFacing);

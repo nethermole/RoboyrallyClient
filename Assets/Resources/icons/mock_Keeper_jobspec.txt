@@ -1,0 +1,27 @@
+
+{
+  "initiators": [{
+    "type": "keeper",
+    "params": {
+      "address": "0x42dD7716721ba279dA2f1F06F97025d739BD79a8",
+      "keeperParam": {
+        "data":{"place":"holder"}
+      },
+      "idleTimer": {
+        "duration": "1h"
+      },
+      "pollTimer": {
+        "period": "1m"
+      }
+    }
+  }],
+  "tasks": [
+    {
+      "type": "registerKeeperNode",
+      "params": { }
+    },
+  ],
+  "startAt": "2021-08-01T15:13:03Z",
+  "endAt": null,
+  "minPayment": "1000000000000000000"
+}

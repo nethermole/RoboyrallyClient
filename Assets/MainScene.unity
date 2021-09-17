@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba9d035f54be6cf459f81c2638876809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowPrefab: {fileID: 100002, guid: 0bf73d4b4f2d14346bb56b2164eda25f, type: 3}
+  arrowPrefab: {fileID: 4492290409846039311, guid: 5bdd8ad03ebdde94ba7b77f44a5885bc, type: 3}
 --- !u!4 &18174985
 Transform:
   m_ObjectHideFlags: 0
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68f8be9a128aed34ba3a70f7f96a0cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowPrefab: {fileID: 3961999710259707082, guid: 8a156b39b4b8f674481ce0b8d3bf84ce, type: 3}
+  arrowPrefab: {fileID: 4492290409846039311, guid: 5bdd8ad03ebdde94ba7b77f44a5885bc, type: 3}
 --- !u!4 &204353953
 Transform:
   m_ObjectHideFlags: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
     players: []
   cubePrefab: {fileID: 7876558722841629997, guid: 9a2d28bdb18eeb54e8595d370dc067be, type: 3}
   tilePrefab: {fileID: 6687812456565461017, guid: 59ec261f7cba4924d88f037b89565f9e, type: 3}
-  arrowPrefab: {fileID: 3961999710259707082, guid: 8a156b39b4b8f674481ce0b8d3bf84ce, type: 3}
+  arrowPrefab: {fileID: 4492290409846039311, guid: 5bdd8ad03ebdde94ba7b77f44a5885bc, type: 3}
   waypointPrefab: {fileID: 8458714713285053599, guid: 8276a1ff5efaa4149bb52ea951b63c45, type: 3}
   gearcTexture: {fileID: 2800000, guid: 3cb304cbb797de44185b30d8363cc90d, type: 3}
   gearccTexture: {fileID: 2800000, guid: bbc22a11b5afe1b43b2ddfda9631b832, type: 3}

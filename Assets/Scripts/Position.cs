@@ -5,6 +5,20 @@ using UnityEngine;
 [System.Serializable]
 public class Position
 {
+
+    public Position()
+    {
+        this.x = 0;
+        this.y = 0;
+    }
+
+    //copy constructor
+    public Position(Position originalPosition)
+    {
+        this.x = originalPosition.x;
+        this.y = originalPosition.y;
+    }
+
     public int x;
     public int y;
 

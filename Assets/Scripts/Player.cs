@@ -13,8 +13,9 @@ public class Player
     public GameObject robotPiece;
     public Color color;
 
-    public Player()
+    public Player(Position position)
     {
+        this.position = position;
         color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
     }
 

@@ -205,7 +205,7 @@ public class BoardDrawer : MonoBehaviour
         if (!gameObjectReferences[x][y].ContainsKey("floor")){
             gameObjectReferences[x][y].Add("floor", cube);
 
-            float randomFloat = Random.Range(.1f, 0.9f);
+            float randomFloat = Random.Range(.3f, 0.7f);
             Color cubeColor = new Color(randomFloat, randomFloat, randomFloat);
             cube.GetComponent<Renderer>().material.SetColor("_Color", cubeColor);
 

@@ -16,18 +16,9 @@ public class ActionQueue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int playerCount = 2;
-
         utilities = new Utilities();
 
         game = new Game();
-        game.SetPlayerCount(playerCount);
-
-        for(int i = 0; i < playerCount; i++)
-        {
-            GameObject robot = Instantiate(arrowPrefab, utilities.convertGameXYtoVector3(0, 0) + new Vector3(0, 1f, 0), Quaternion.identity);
-            game.GetPlayer(i).SetRobotPiece(robot);
-        }
 
         InvokeRepeating("StartUpdatePolling", 1f, .1f);
         InvokeRepeating("DoNextAction", 1f, .7f);
@@ -64,9 +55,19 @@ public class ActionQueue : MonoBehaviour
 
         string rawJson = Encoding.Default.GetString(webRequest.downloadHandler.data);
         JObject jobject = JObject.Parse(rawJson);
+
+        if (jobject["startInfo"].HasValues && !game.HasPlayersSet())
+        {
+            StartInfo startInfo = jobject["startInfo"].ToObject<StartInfo>();
+
+            Debug.Log(jobject);
+            game.SetStartInfo(startInfo);
+            boardDrawer.DrawPlayers(game.GetPlayers());
+        }
+
+
         if (jobject["viewSteps"].HasValues)
         {
-            Debug.Log(rawJson + rawJson.Length);
             List<RobotMoveViewStep> gameSteps = new List<RobotMoveViewStep>();
             for (int i = 0; i < ((JArray)jobject["viewSteps"]).Count; i++)
             {

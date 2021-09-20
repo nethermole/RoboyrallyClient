@@ -124,13 +124,21 @@ public class BoardDrawer : MonoBehaviour
 
     public void DrawBoard()
     {
-        List<List<Tile>> tiles = board.squares;
-        for(int x = 0; x<tiles.Count; x++)
+        foreach(int x in board.squares.Keys)
         {
-            List<Tile> row = tiles[x];
-            for(int y = 0; y< row.Count; y++)
+            foreach(int y in board.squares[x].Keys)
             {
-                Tile tile = row[y];
+
+                if (!gameObjectReferences.ContainsKey(x))
+                {
+                    gameObjectReferences[x] = new Dictionary<int, Dictionary<string, GameObject>>();
+                }
+                if (!gameObjectReferences[x].ContainsKey(y))
+                {
+                    gameObjectReferences[x][y] = new Dictionary<string, GameObject>();
+                }
+
+                Tile tile = board.squares[x][y];
 
                 bool drawFloor = true;
                 foreach (Element element in tile.elements)
@@ -154,7 +162,7 @@ public class BoardDrawer : MonoBehaviour
 
     public void DrawElement(int x, int y, Element element)
     {
-        if(element.elementEnum == "BEACON")
+        if (element.elementEnum == "BEACON")
         {
             Debug.Log("drawing beacon at " + x + ", " + y);
             GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
@@ -183,8 +191,10 @@ public class BoardDrawer : MonoBehaviour
         if (texture != null) {
             //float height = 0.5f + (0.01f * gameObjectReferences[x][y].Count - 1);   //block + tiles
             Vector3 position = new Vector3(x, 0.55f, y);
-            GameObject elementGameObject = Instantiate(tilePrefab, position, Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z+180f)));
+            GameObject elementGameObject = Instantiate(tilePrefab, position, Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
+
             gameObjectReferences[x][y].Add(element.elementEnum, elementGameObject);
+       
 
             elementGameObject.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", texture);
         } else

@@ -6,5 +6,5 @@ using UnityEngine;
 public class DTOBoard
 {
     public List<Player> players;
-    public List<List<Tile>> squares;
+    public Dictionary<int, Dictionary<int, Tile>> squares;
 }

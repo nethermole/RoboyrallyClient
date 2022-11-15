@@ -5,5 +5,5 @@ using UnityEngine;
 
 public abstract class ViewStep
 {
-
+    public string typeName;
 }

@@ -7,18 +7,29 @@ public class Game
 {
     Dictionary<int, Player> playerMap;
     Queue<RobotMoveViewStep> viewSteps;
+    Entrypoint logger;
     int turn;
     bool playersSet;
 
-    public Game()
+    public Game(Entrypoint entrypoint)
     {
+        logger = entrypoint;
         turn = 0;
         playersSet = false;
         viewSteps = new Queue<RobotMoveViewStep>();
     }
 
+    private void print(string output)
+    {
+        logger.Log(output);
+    }
+
     public bool HasNextAction()
     {
+        if (!playersSet)
+        {
+            return false;
+        }
         return viewSteps.Count > 0;
     }
 
@@ -35,6 +46,7 @@ public class Game
 
     public void SetStartInfo(StartInfo startInfo)
     {
+       print("Start coordinate: " + startInfo.startPosition.GetX() + ", " + startInfo.startPosition.GetY());
         playerMap = new Dictionary<int, Player>();
         for (int i = 0; i < startInfo.playerCount; i++)
         {
@@ -42,6 +54,7 @@ public class Game
             playerMap.Add(i, player);
         }
         playersSet = true;
+        turn = 1;
     }
 
     public Player GetPlayer(int id)

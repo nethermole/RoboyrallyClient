@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 public class BoardDrawer : MonoBehaviour
 {
+    GameObject scriptstore;
+    BackendGameService backendGameService;
 
-    bool needsUpdate;
-    bool canCreateBoard;
     public DTOBoard board;
 
     public GameObject cubePrefab;
@@ -78,8 +78,9 @@ public class BoardDrawer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        needsUpdate = true;
-        canCreateBoard = false;
+        scriptstore = GameObject.Find("scriptstore");
+        backendGameService = scriptstore.GetComponentInChildren<BackendGameService>();
+
         gameObjectReferences = new Dictionary<int, Dictionary<int, Dictionary<string, GameObject>>>();
         for(int x = 0; x < 12; x++)
         {
@@ -89,38 +90,10 @@ public class BoardDrawer : MonoBehaviour
                 gameObjectReferences[x].Add(y, new Dictionary<string, GameObject>());
             }
         }
-
-
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (needsUpdate)
-        {
-            StartCoroutine(GetBoardInfo());
-            needsUpdate = false;
-            canCreateBoard = false;
-        }
-
-        if (canCreateBoard)
-        {
-            DrawBoard();
-            canCreateBoard = false;
-        }
-    }
-
-    IEnumerator GetBoardInfo()
-    {
-        UnityWebRequest webRequest = new UnityWebRequest();
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.url = "localhost:8080/board";
-        yield return webRequest.SendWebRequest();
-
-        string rawJson = Encoding.Default.GetString(webRequest.downloadHandler.data);
-        board = JsonConvert.DeserializeObject<DTOBoard>(rawJson);
-        canCreateBoard = true;
-    }
+    void Update(){}
 
     public void DrawBoard()
     {
@@ -165,15 +138,15 @@ public class BoardDrawer : MonoBehaviour
         if (element.elementEnum == "BEACON")
         {
             Debug.Log("drawing beacon at " + x + ", " + y);
-            GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
-            waypoint.GetComponent<MeshRenderer>().materials[0].color = Color.red;
+            //GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
+            //waypoint.GetComponent<MeshRenderer>().materials[0].color = Color.red;
         }
 
         if (element.elementEnum == "CHECKPOINT1")
         {
             Debug.Log("drawing checkpoint at " + x + ", " + y);
-            GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
-            waypoint.GetComponent<MeshRenderer>().materials[0].color = Color.green;
+            //GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
+            //waypoint.GetComponent<MeshRenderer>().materials[0].color = Color.green;
         }
 
         //walls

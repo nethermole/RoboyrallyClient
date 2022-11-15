@@ -8,3 +8,5 @@ public class StartInfo
     public int playerCount;
     public Position startPosition;
 }
+
+

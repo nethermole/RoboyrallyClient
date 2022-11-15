@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Assets.Scripts;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class ActionQueue : MonoBehaviour
 {
@@ -13,17 +10,29 @@ public class ActionQueue : MonoBehaviour
     public GameObject arrowPrefab;
     BoardDrawer boardDrawer;
 
+    GameObject scriptstore;
+    BackendGameService backendGameService;
+
     // Start is called before the first frame update
     void Start()
     {
+        scriptstore = GameObject.Find("scriptstore");
+        backendGameService = scriptstore.GetComponentInChildren<BackendGameService>();
+
         utilities = new Utilities();
 
-        game = new Game();
+        boardDrawer = GameObject.Find("BoardDrawer").GetComponent<BoardDrawer>();
+    }
 
-        InvokeRepeating("StartUpdatePolling", 1f, .1f);
+    public void setGame(Game game)
+    {
+        this.game = game;
+    }
+
+    public void startPolling()
+    {
+        InvokeRepeating("GetViewUpdateList", 1, 1);
         InvokeRepeating("DoNextAction", 1f, .7f);
-
-        boardDrawer = GameObject.Find("BoardGetter").GetComponent<BoardDrawer>();
     }
 
     private void Update() { }
@@ -31,6 +40,9 @@ public class ActionQueue : MonoBehaviour
     // Update is called once per frame
     void DoNextAction()
     {
+        if(game == null) {
+            return;
+        }
         if (game.HasNextAction())
         {
             ViewStep viewstep = game.GetNextViewstep();
@@ -41,47 +53,34 @@ public class ActionQueue : MonoBehaviour
         }
     }
 
-    void StartUpdatePolling()
+    void GetViewUpdateList()
     {
-        StartCoroutine(GetViewUpdateList());
-    }
+        if (game == null) { return; }
+        DTOViewUpdateList dtoViewUpdateList = backendGameService.GetViewUpdateList(game.GetTurn());
 
-    IEnumerator GetViewUpdateList()
-    {
-        UnityWebRequest webRequest = new UnityWebRequest();
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.url = "localhost:8080/viewupdate/turn/" + game.GetTurn();
-        yield return webRequest.SendWebRequest();
-
-        string rawJson = Encoding.Default.GetString(webRequest.downloadHandler.data);
-        JObject jobject = JObject.Parse(rawJson);
-
-        if (jobject["startInfo"].HasValues && !game.HasPlayersSet())
+        StartInfo startInfo = dtoViewUpdateList.startInfo;
+        if (startInfo != null && !game.HasPlayersSet())
         {
-            StartInfo startInfo = jobject["startInfo"].ToObject<StartInfo>();
-
-            Debug.Log(jobject);
-            game.SetStartInfo(startInfo);
+            game.SetStartInfo(dtoViewUpdateList.startInfo);
             boardDrawer.DrawPlayers(game.GetPlayers());
         }
 
-
-        if (jobject["viewSteps"].HasValues)
+        List<RobotMoveViewStep> viewSteps = dtoViewUpdateList.viewSteps;
+        if(viewSteps == null)
+        {
+            print("viewSteps was null in GetViewUpdateList()");
+        } else if (viewSteps.Count > 0)
         {
             List<RobotMoveViewStep> gameSteps = new List<RobotMoveViewStep>();
-            for (int i = 0; i < ((JArray)jobject["viewSteps"]).Count; i++)
+            for (int i = 0; i < viewSteps.Count; i++)
             {
-                string typename = (string)jobject["viewSteps"][i]["typeName"];
-                switch (typename)
-                {
-                    case "RobotMoveViewStep":
-                        gameSteps.Add(JsonConvert.DeserializeObject<RobotMoveViewStep>((string)jobject["viewSteps"][i].ToString()));
-                        break;
-                    default:
-                        throw new System.Exception("no type found for viewstep");
-                }
+                gameSteps.Add(viewSteps[i]);
             }
             game.addRobotMoveViewSteps(gameSteps);
+        }
+        else
+        {
+            print("no viewSteps in GetViewUpdateList()");
         }
     }
 

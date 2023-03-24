@@ -44,11 +44,4 @@ public class BackendGameService : MonoBehaviour
         return callback;
     }
 
-    public List<Player> GetPlayerInfo()
-    {
-        List<Player> callback = new List<Player>();
-        StartCoroutine(restClient.GetPlayerInfo(callback));
-        return callback;
-    }
-
 }

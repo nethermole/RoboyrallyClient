@@ -15,7 +15,6 @@ public class BoardDrawer : MonoBehaviour
     public GameObject cubePrefab;
     public GameObject tilePrefab;
     public GameObject arrowPrefab;
-    public GameObject waypointPrefab;
 
     public Texture gearcTexture;
     public Texture gearccTexture;
@@ -70,14 +69,27 @@ public class BoardDrawer : MonoBehaviour
     public Texture conveyor3lr;
     public Texture conveyor3ld;
 
-    public Texture beacon;
     public Texture checkpoint1;
+    public Texture checkpoint2;
+    public Texture checkpoint3;
+    public Texture checkpoint4;
+    public Texture checkpoint5;
+    public Texture checkpoint6;
+    public Texture checkpoint7;
+    public Texture checkpoint8;
+    public Texture checkpoint9;
+    public Texture checkpoint10;
+
+    public Texture beacon;
+
 
     public Dictionary<int, Dictionary<int, Dictionary<string, GameObject>>> gameObjectReferences;
+    public Dictionary<string, Color> teamColors;
 
     // Start is called before the first frame update
     void Start()
     {
+        teamColors = new Dictionary<string, Color>();
         scriptstore = GameObject.Find("scriptstore");
         backendGameService = scriptstore.GetComponentInChildren<BackendGameService>();
 
@@ -135,20 +147,6 @@ public class BoardDrawer : MonoBehaviour
 
     public void DrawElement(int x, int y, Element element)
     {
-        if (element.elementEnum == "BEACON")
-        {
-            Debug.Log("drawing beacon at " + x + ", " + y);
-            //GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
-            //waypoint.GetComponent<MeshRenderer>().materials[0].color = Color.red;
-        }
-
-        if (element.elementEnum == "CHECKPOINT1")
-        {
-            Debug.Log("drawing checkpoint at " + x + ", " + y);
-            //GameObject waypoint = Instantiate(waypointPrefab, new Vector3(x, 2, y), Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
-            //waypoint.GetComponent<MeshRenderer>().materials[0].color = Color.green;
-        }
-
         //walls
         if (element.elementEnum == "WALL_UP" ||
             element.elementEnum == "WALL_RIGHT" ||
@@ -164,7 +162,7 @@ public class BoardDrawer : MonoBehaviour
         if (texture != null) {
             //float height = 0.5f + (0.01f * gameObjectReferences[x][y].Count - 1);   //block + tiles
             Vector3 position = new Vector3(x, 0.55f, y);
-            GameObject elementGameObject = Instantiate(tilePrefab, position, Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)));
+            GameObject elementGameObject = Instantiate(tilePrefab, position, Quaternion.Euler(new Vector3(Quaternion.identity.eulerAngles.x, Quaternion.identity.eulerAngles.y, Quaternion.identity.eulerAngles.z + 180f)), this.transform);
 
             gameObjectReferences[x][y].Add(element.elementEnum, elementGameObject);
        
@@ -214,16 +212,31 @@ public class BoardDrawer : MonoBehaviour
     }
 
 
-    public List<Player> DrawPlayers(List<Player> players)
+    public void DrawPlayers(StartInfo startInfo)
     {
-        foreach (Player player in players)
+        foreach (Player player in startInfo.players)
         {
-            Vector3 position = new Vector3(player.position.x, 1, player.position.y);
-            GameObject robot = Instantiate(arrowPrefab, position, Quaternion.identity);
-            player.robotPiece = robot;
-        }
+            Vector3 position = new Vector3(startInfo.startPosition.x, 1, startInfo.startPosition.y);
 
-        return players;
+            GameObject robot = Instantiate(arrowPrefab, position, Quaternion.identity);
+
+            player.robotPiece = robot;
+            robot.GetComponent<TextMesh>().text = player.name;
+
+            string teamName = player.name.Split('-')[0];
+            Color teamColor = Color.black;
+            if (teamColors.ContainsKey(teamName))
+            {
+                teamColor = teamColors[teamName];
+            } else
+            {
+                teamColor = new Color(Random.value, Random.value, Random.value);
+                teamColors[teamName] = teamColor;
+            }
+
+            robot.GetComponent<TextMesh>().color = teamColor;
+            robot.GetComponent<MeshRenderer>().material.color = teamColor;
+        }
     }
 
     private Texture getTexture(string elementEnum)
@@ -338,8 +351,37 @@ public class BoardDrawer : MonoBehaviour
             case "CONVEYOR_3_LEFT_DOWN":
                 return conveyor3ld;
 
+
             case "CHECKPOINT1":
                 return checkpoint1;
+
+            case "CHECKPOINT2":
+                return checkpoint2;
+
+            case "CHECKPOINT3":
+                return checkpoint3;
+
+            case "CHECKPOINT4":
+                return checkpoint4;
+
+            case "CHECKPOINT5":
+                return checkpoint5;
+
+            case "CHECKPOINT6":
+                return checkpoint6;
+
+            case "CHECKPOINT7":
+                return checkpoint7;
+
+            case "CHECKPOINT8":
+                return checkpoint8;
+
+            case "CHECKPOINT9":
+                return checkpoint9;
+
+            case "CHECKPOINT10":
+                return checkpoint10;
+
 
             case "BEACON":
                 return beacon;

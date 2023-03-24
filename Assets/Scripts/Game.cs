@@ -48,13 +48,17 @@ public class Game
     {
        print("Start coordinate: " + startInfo.startPosition.GetX() + ", " + startInfo.startPosition.GetY());
         playerMap = new Dictionary<int, Player>();
-        for (int i = 0; i < startInfo.playerCount; i++)
+        foreach(Player player in startInfo.players)
+        {
+            playerMap[player.id] = player;
+        }
+        /*for (int i = 0; i < startInfo.players.Count; i++)
         {
             Player player = new Player(new Position(startInfo.startPosition));
             playerMap.Add(i, player);
-        }
+        }*/
         playersSet = true;
-        turn = 1;
+        turn = 0;
     }
 
     public Player GetPlayer(int id)

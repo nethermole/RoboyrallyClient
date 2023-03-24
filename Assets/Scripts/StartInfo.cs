@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class StartInfo
 {
-    public int playerCount;
+    public List<Player> players;
     public Position startPosition;
 }
 

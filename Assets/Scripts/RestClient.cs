@@ -13,7 +13,7 @@ class RestClient : MonoBehaviour
     {
         UnityWebRequest webRequest = new UnityWebRequest();
         webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.url = "localhost:8080/board";
+        webRequest.url = "localhost:8080/board/0";
 
         webRequest.SendWebRequest();
         while (!webRequest.isDone) { }
@@ -34,14 +34,14 @@ class RestClient : MonoBehaviour
     {
         UnityWebRequest webRequest = new UnityWebRequest();
         webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.url = "localhost:8080/viewupdate/turn/";
+        webRequest.url = "localhost:8080/viewupdate/0/turn/0";
 
         webRequest.SendWebRequest();
         while (!webRequest.isDone) { }
 
         if (webRequest.result == UnityWebRequest.Result.ConnectionError)
         {
-            print("ugh");
+            print("webrequestConnectionError - GetStartInfo");
         }
         else
         {
@@ -56,13 +56,14 @@ class RestClient : MonoBehaviour
                 {
                     print("failed to parse json:\n" + rawJson);
                 }
+                StartInfo startInfo = JsonConvert.DeserializeObject<StartInfo>(rawJson);
+
+                callback.players = startInfo.players;
+                callback.startPosition = startInfo.startPosition;
             } else
             {
                 print("localhost:8080/viewupdate/turn/" + " responded with no content");
             }
-
-            callback.playerCount = 2;
-            callback.startPosition = new Position(5, 5);
 
             yield return callback;
         }
@@ -72,7 +73,7 @@ class RestClient : MonoBehaviour
     {
         UnityWebRequest webRequest = new UnityWebRequest();
         webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.url = "localhost:8080/viewupdate/turn/" + turn;
+        webRequest.url = "localhost:8080/viewupdate/0/turn/" + turn;
 
         webRequest.SendWebRequest();
         while (!webRequest.isDone) { }
@@ -86,33 +87,4 @@ class RestClient : MonoBehaviour
         yield return callback;
     }
 
-    public IEnumerator GetPlayerInfo(List<Player> callback)
-    {
-        if(callback.Count != 0)
-        {
-            print("callback did not start empty in RestClient.GetPlayerInfo. Get off this callback paradigm");
-        }
-
-        UnityWebRequest webRequest = new UnityWebRequest();
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.url = "localhost:8080/player";
-
-        webRequest.SendWebRequest();
-        while (!webRequest.isDone) { }
-
-        if (webRequest.isError)
-        {
-            print("ugh)");
-        }
-        else
-        {
-            string rawJson = Encoding.Default.GetString(webRequest.downloadHandler.data);
-            List<Player> players = JsonConvert.DeserializeObject<List<Player>>(rawJson);
-            foreach(Player player in players)
-            {
-                callback.Add(player);
-            }
-        }
-        yield return callback;
-    }
 }

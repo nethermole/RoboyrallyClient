@@ -7,7 +7,6 @@ public class ActionQueue : MonoBehaviour
 {
     Game game;  //the game actually has the queue
     Utilities utilities;
-    public GameObject arrowPrefab;
     BoardDrawer boardDrawer;
 
     GameObject scriptstore;
@@ -32,7 +31,7 @@ public class ActionQueue : MonoBehaviour
     public void startPolling()
     {
         InvokeRepeating("GetViewUpdateList", 1, 1);
-        InvokeRepeating("DoNextAction", 1f, .7f);
+        InvokeRepeating("DoNextAction", 1f, 1f);
     }
 
     private void Update() { }
@@ -47,7 +46,7 @@ public class ActionQueue : MonoBehaviour
         {
             ViewStep viewstep = game.GetNextViewstep();
             RobotMoveViewStep robotMoveViewStep = (RobotMoveViewStep)viewstep;
-            Debug.Log("Doing Action: Moving from " + robotMoveViewStep.startPosition.x + "," + robotMoveViewStep.startPosition.y + " to " + robotMoveViewStep.endPosition.x + "," + robotMoveViewStep.endPosition.y);
+            Debug.Log("Moving bot " + robotMoveViewStep.robotId + "from " + robotMoveViewStep.startPosition.x + "," + robotMoveViewStep.startPosition.y + " to " + robotMoveViewStep.endPosition.x + "," + robotMoveViewStep.endPosition.y);
 
             DoAction(robotMoveViewStep);
         }
@@ -62,25 +61,26 @@ public class ActionQueue : MonoBehaviour
         if (startInfo != null && !game.HasPlayersSet())
         {
             game.SetStartInfo(dtoViewUpdateList.startInfo);
-            boardDrawer.DrawPlayers(game.GetPlayers());
+            boardDrawer.DrawPlayers(dtoViewUpdateList.startInfo);
         }
-
-        List<RobotMoveViewStep> viewSteps = dtoViewUpdateList.viewSteps;
-        if(viewSteps == null)
-        {
-            print("viewSteps was null in GetViewUpdateList()");
-        } else if (viewSteps.Count > 0)
-        {
-            List<RobotMoveViewStep> gameSteps = new List<RobotMoveViewStep>();
-            for (int i = 0; i < viewSteps.Count; i++)
+        else {
+            List<RobotMoveViewStep> viewSteps = dtoViewUpdateList.viewSteps;
+            if(viewSteps == null)
             {
-                gameSteps.Add(viewSteps[i]);
+                print("viewSteps was null in GetViewUpdateList()");
+            } else if (viewSteps.Count > 0)
+            {
+                List<RobotMoveViewStep> gameSteps = new List<RobotMoveViewStep>();
+                for (int i = 0; i < viewSteps.Count; i++)
+                {
+                    gameSteps.Add(viewSteps[i]);
+                }
+                game.addRobotMoveViewSteps(gameSteps);
             }
-            game.addRobotMoveViewSteps(gameSteps);
-        }
-        else
-        {
-            print("no viewSteps in GetViewUpdateList()");
+            else
+            {
+                print("no viewSteps in GetViewUpdateList()");
+            }
         }
     }
 
@@ -115,7 +115,7 @@ public class ActionQueue : MonoBehaviour
         }
     }
 
-    private int determineRotationRight(Direction startFacing, Direction endFacing)
+    public int determineRotationRight(Direction startFacing, Direction endFacing)
     {
         int change = endFacing - startFacing;
         change *= 90;

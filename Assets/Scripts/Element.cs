@@ -6,4 +6,5 @@ using UnityEngine;
 public class Element
 {
     public string elementEnum;
+    public string elementMeta;
 }

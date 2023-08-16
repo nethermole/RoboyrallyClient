@@ -1,5 +1,30 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!65 &8954431464276935849
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3335117378865406696}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2, y: 0.5668743, z: 0.33211583}
+  m_Center: {x: 0, y: 0.17845947, z: 0.00034650415}
+--- !u!114 &817543542903476279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3335117378865406696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec2edea174b7144592b548764dcbd58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!102 &512066570
 TextMesh:
   serializedVersion: 3
@@ -63,6 +88,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-3079483582323249032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3335117378865406698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec2edea174b7144592b548764dcbd58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3335117378865374280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -127,5 +164,10 @@ PrefabInstance:
 --- !u!1 &3335117378865406698 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100002, guid: 0bf73d4b4f2d14346bb56b2164eda25f, type: 3}
+  m_PrefabInstance: {fileID: 3335117378865374280}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3335117378865406696 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 0bf73d4b4f2d14346bb56b2164eda25f, type: 3}
   m_PrefabInstance: {fileID: 3335117378865374280}
   m_PrefabAsset: {fileID: 0}

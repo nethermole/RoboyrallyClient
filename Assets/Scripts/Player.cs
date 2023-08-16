@@ -34,4 +34,9 @@ public class Player
     {
         return color;
     }
+
+    public string getSelectedText()
+    {
+        return JsonUtility.ToJson(this);
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Entrypoint : MonoBehaviour
 {
-    Game game;
+    public Game game;
     Utilities utilities;
     BoardDrawer boardDrawer;
 
@@ -60,5 +60,12 @@ public class Entrypoint : MonoBehaviour
     void ActionQueueStart()
     {
         actionQueue.startPolling();
+    }
+
+    public static Entrypoint instance;
+    private void Awake()
+    {
+        instance = this;
+        DontDestroyOnLoad(instance);
     }
 }

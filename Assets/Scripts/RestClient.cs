@@ -9,6 +9,17 @@ using System.Collections.Generic;
 
 class RestClient : MonoBehaviour
 {
+
+    public IEnumerator StartBotGame()
+    {
+            using(UnityWebRequest postRequest = UnityWebRequest.Post("localhost:8080/botStart", ""))
+            {
+                postRequest.SendWebRequest();
+                while (!postRequest.isDone) {}
+                yield return "";
+            }
+    }
+
     public IEnumerator GetBoardInfo(DTOBoard callback)
     {
         UnityWebRequest webRequest = new UnityWebRequest();
@@ -86,5 +97,13 @@ class RestClient : MonoBehaviour
 
         yield return callback;
     }
+
+    public static RestClient instance;
+    private void Awake()
+    {
+        instance = this;
+        DontDestroyOnLoad(instance);
+    }
+
 
 }

@@ -61,6 +61,19 @@ public class Game
         turn = 0;
     }
 
+    public Player GetPlayer(string name)
+    {
+        List<Player> players = new List<Player>(playerMap.Values);
+        foreach(Player player in players)
+        {
+            if(player.name == name)
+            {
+                return player;
+            }
+        }
+        return null;
+    }
+
     public Player GetPlayer(int id)
     {
         return playerMap[id];

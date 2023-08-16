@@ -20,6 +20,16 @@ class RestClient : MonoBehaviour
             }
     }
 
+    public IEnumerator StartPlayerGame()
+    {
+        using (UnityWebRequest postRequest = UnityWebRequest.Post("localhost:8080/debugStart", ""))
+        {
+            postRequest.SendWebRequest();
+            while (!postRequest.isDone) { }
+            yield return "";
+        }
+    }
+
     public IEnumerator GetBoardInfo(DTOBoard callback)
     {
         UnityWebRequest webRequest = new UnityWebRequest();

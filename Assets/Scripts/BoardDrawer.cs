@@ -109,9 +109,9 @@ public class BoardDrawer : MonoBehaviour
 
     public void DrawBoard()
     {
-        foreach(int x in board.squares.Keys)
+        foreach (int x in board.squares.Keys)
         {
-            foreach(int y in board.squares[x].Keys)
+            foreach (int y in board.squares[x].Keys)
             {
 
                 if (!gameObjectReferences.ContainsKey(x))
@@ -128,7 +128,8 @@ public class BoardDrawer : MonoBehaviour
                 bool drawFloor = true;
                 foreach (Element element in tile.elements)
                 {
-                    if(element.elementEnum == "PIT") {
+                    if (element.elementEnum == "PIT")
+                    {
                         drawFloor = false;
                         DrawPit(x, y);
                     }

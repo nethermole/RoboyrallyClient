@@ -22,6 +22,8 @@ public class MainMenuButtons : MonoBehaviour
 
     public void StartPlayerGame()
     {
+        string gameUUID = "";
+        StartCoroutine(restClient.StartPlayerGame());
         SceneManager.LoadScene(gameScene);
     }
 
